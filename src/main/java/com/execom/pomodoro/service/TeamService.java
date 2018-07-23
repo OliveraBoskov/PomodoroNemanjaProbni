@@ -59,12 +59,22 @@ public class TeamService {
     }
     public Team addUsersToTeam(List<Long> userIds, Long teamId){
         Team team = teamRepository.findOneById(teamId);
+        List<User> users = usersFromTeam(teamId);
         for(Long l: userIds){
-            User user = userRepository.findOneById(l);
-            UserToGroup userToGroup = new UserToGroup();
-            userToGroup.setUser(user);
-            userToGroup.setTeam(team);
-            userToGroupRepository.save(userToGroup);
+            boolean alreadyExist = false;
+            for(User u: users){
+                if(u.getId() == l){
+                    alreadyExist = true;
+                    break;
+                }
+            }
+            if(!alreadyExist){
+                User user = userRepository.findOneById(l);
+                UserToGroup userToGroup = new UserToGroup();
+                userToGroup.setUser(user);
+                userToGroup.setTeam(team);
+                userToGroupRepository.save(userToGroup);
+            }
 //            user.getUserToGroup().add(userToGroup);
 //            userRepository.save(user);
 //            team.getUserToGroup().add(userToGroup);
@@ -86,6 +96,15 @@ public class TeamService {
         return users;
     }
     
-    
+    public List<Team> teamsFromUser(Long id){
+        User user = userRepository.findOneById(id);
+        List<UserToGroup> tempList = userToGroupRepository.findAllByUser(user);
+        List<Team> teams = new ArrayList<>();
+        for(UserToGroup u: tempList){
+            teams.add(u.getTeam());
+        }
+            
+        return teams;
+    }
 
 }

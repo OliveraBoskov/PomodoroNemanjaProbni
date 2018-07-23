@@ -12,4 +12,5 @@ import com.execom.pomodoro.domain.UserToGroup;
 public interface UserToGroupRepository extends JpaRepository<UserToGroup, Long>{
 
     List<UserToGroup> findAllByTeam(Team team);
+    List<UserToGroup> findAllByUser(User user);
 }

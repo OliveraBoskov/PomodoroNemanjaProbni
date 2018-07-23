@@ -1,7 +1,6 @@
 package com.execom.pomodoro.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,17 +11,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "User")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode
 public class User {
 
     @Id
@@ -30,15 +25,15 @@ public class User {
     private Long id;
 
     @NotNull
-    @Column(name = "Username", unique = true)
+    @Column(name = "username", unique = true)
     private String username;
 
     @NotNull
-    @Column(name = "FullName", unique = true)
+    @Column(name = "fullName", unique = true)
     private String fullName;
 
     @NotNull
-    @Column(name = "Email", unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     @NotNull
@@ -47,13 +42,11 @@ public class User {
     @NotNull
     private boolean active;
     
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "user")
-//    private List<UserToGroup> userToGroup = new ArrayList<>();
-//    
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "user")
-//    private List<Pomodoro> pomodoro = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private Set<UserToGroup> userToGroup;
+    
+    @OneToMany(mappedBy = "user")
+    private Set<Pomodoro> pomodoro;
 
     public User(@NotNull String username, @NotNull String fullName, @NotNull String email, @NotNull String role) {
         super();
@@ -62,5 +55,4 @@ public class User {
         this.email = email;
         this.role = role;
     }
-
 }

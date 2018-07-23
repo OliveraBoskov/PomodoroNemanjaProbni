@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.execom.pomodoro.controller.dto.TeamDTO;
 import com.execom.pomodoro.controller.dto.UserDTO;
 import com.execom.pomodoro.domain.User;
 import com.execom.pomodoro.service.Mapper;
+import com.execom.pomodoro.service.TeamService;
 import com.execom.pomodoro.service.UserService;
 
 @RestController
@@ -26,12 +28,15 @@ public class UserController {
 
     private UserService userService;
     
+    private TeamService teamService;
+    
     private Mapper mapper;
     
     @Autowired
-    public UserController(UserService userService, Mapper mapper) {
+    public UserController(UserService userService, Mapper mapper, TeamService teamService) {
         this.userService = userService;
         this.mapper = mapper;
+        this.teamService = teamService;
     }
     
     @GetMapping()
@@ -70,6 +75,12 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(mapper.userToUserDTO(user), HttpStatus.OK);
+    }
+    
+    @GetMapping("/{id}/teams-from-user")
+    public ResponseEntity<List<TeamDTO>> teamsFromUser(@PathVariable Long id){
+        List<TeamDTO> teams = mapper.teamListToTeamDTOList(teamService.teamsFromUser(id));
+        return new ResponseEntity<>(teams, HttpStatus.OK);
     }
     
  
