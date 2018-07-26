@@ -13,4 +13,6 @@ public interface UserToGroupRepository extends JpaRepository<UserToGroup, Long>{
 
     List<UserToGroup> findAllByTeam(Team team);
     List<UserToGroup> findAllByUser(User user);
+    UserToGroup findOneByTeam(Team team);
+    UserToGroup findOneByTeamAndUser(Team team, User user);
 }

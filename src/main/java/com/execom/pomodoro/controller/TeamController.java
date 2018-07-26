@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.execom.pomodoro.controller.dto.AddUserToTeamDTO;
+import com.execom.pomodoro.controller.dto.RemoveUserFromTeamDTO;
 import com.execom.pomodoro.controller.dto.TeamDTO;
 import com.execom.pomodoro.controller.dto.TeamInfoDTO;
 import com.execom.pomodoro.domain.Team;
@@ -84,7 +85,9 @@ public class TeamController {
         return new ResponseEntity<>(teamInfo, HttpStatus.OK);
     }
     
-    
-    
-    
+    @PutMapping("/{id}/remove-user-from-team")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeUserFromTeam(@PathVariable("id") Long teamId, @RequestBody RemoveUserFromTeamDTO removeUserFromTeamDTO){
+        teamService.removeUserFromTeam(teamId, removeUserFromTeamDTO.getUserId());
+    }
 }

@@ -6,11 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.execom.pomodoro.controller.dto.AddMemberDTO;
 import com.execom.pomodoro.domain.Team;
 import com.execom.pomodoro.domain.User;
+import com.execom.pomodoro.domain.UserRole;
 import com.execom.pomodoro.domain.UserToGroup;
 import com.execom.pomodoro.repository.TeamRepository;
 import com.execom.pomodoro.repository.UserRepository;
+import com.execom.pomodoro.repository.UserRoleRepository;
 import com.execom.pomodoro.repository.UserToGroupRepository;
 
 @Service
@@ -19,13 +22,15 @@ public class TeamService {
     private TeamRepository teamRepository;
     private UserRepository userRepository;
     private UserToGroupRepository userToGroupRepository;
+    private UserRoleRepository userRoleRepository;
 
     @Autowired
     public TeamService(TeamRepository teamRepository, UserRepository userRepository,
-            UserToGroupRepository userToGroupRepository) {
+            UserToGroupRepository userToGroupRepository, UserRoleRepository userRoleRepository) {
         this.teamRepository = teamRepository;
         this.userRepository = userRepository;
         this.userToGroupRepository = userToGroupRepository;
+        this.userRoleRepository = userRoleRepository;
     }
     
     public Team createTeam(String name, String description){
@@ -57,22 +62,24 @@ public class TeamService {
         
         return teamRepository.save(team);
     }
-    public Team addUsersToTeam(List<Long> userIds, Long teamId){
+    public Team addUsersToTeam(List<AddMemberDTO> lista, Long teamId){
         Team team = teamRepository.findOneById(teamId);
         List<User> users = usersFromTeam(teamId);
-        for(Long l: userIds){
+        for(AddMemberDTO a: lista){
             boolean alreadyExist = false;
             for(User u: users){
-                if(u.getId() == l){
+                if(u.getId() == a.getUserId()){
                     alreadyExist = true;
                     break;
                 }
             }
             if(!alreadyExist){
-                User user = userRepository.findOneById(l);
+                User user = userRepository.findOneById(a.getUserId());
                 UserToGroup userToGroup = new UserToGroup();
                 userToGroup.setUser(user);
                 userToGroup.setTeam(team);
+                UserRole userRole = userRoleRepository.findOneById(a.getUserRoleId());
+                userToGroup.setUserRole(userRole);
                 userToGroupRepository.save(userToGroup);
             }
 //            user.getUserToGroup().add(userToGroup);
@@ -105,6 +112,21 @@ public class TeamService {
         }
             
         return teams;
+    }
+    
+    public void removeUserFromTeam(Long teamId,Long userId ){
+        Team team = teamRepository.findOneById(teamId);
+//        UserToGroup userToGroup = userToGroupRepository.findOneByTeam(team);
+//        User user = new User();
+//        for(Team t: )
+     
+        List<User> usersFromTeam = usersFromTeam(teamId);
+        for(User u: usersFromTeam){
+            if(u.getId() == userId){
+                UserToGroup userToGroup = userToGroupRepository.findOneByTeamAndUser(team, u);
+                userToGroupRepository.delete(userToGroup);
+            }
+        }
     }
 
 }

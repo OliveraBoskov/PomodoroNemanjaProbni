@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddUserToTeamDTO {
     
-    private List<Long> userIds = new ArrayList<>();
+    private List<AddMemberDTO> userIds = new ArrayList<>();
 
-    public AddUserToTeamDTO(List<Long> userIds) {
+    public AddUserToTeamDTO(List<AddMemberDTO> userIds) {
         this.userIds = userIds;
     }
 

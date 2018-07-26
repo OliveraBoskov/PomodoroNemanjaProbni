@@ -1,4 +1,4 @@
-package com.execom.pomodoro.security;
+/*package com.execom.pomodoro.security;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -79,3 +79,4 @@ public class OpenIdConnectUserDetails implements UserDetails {
     }
 
 }
+*/

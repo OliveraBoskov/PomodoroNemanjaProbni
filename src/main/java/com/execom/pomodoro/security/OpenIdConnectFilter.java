@@ -1,4 +1,4 @@
-package com.execom.pomodoro.security;
+/*package com.execom.pomodoro.security;
 
 import static java.util.Optional.empty;
 import static org.springframework.security.core.authority.AuthorityUtils.NO_AUTHORITIES;
@@ -49,4 +49,4 @@ public class OpenIdConnectFilter extends AbstractAuthenticationProcessingFilter 
         final ResponseEntity<UserInfo> userInfoResponseEntity = restTemplate.getForEntity(userInfo, UserInfo.class);  
         return new PreAuthenticatedAuthenticationToken(userInfoResponseEntity.getBody(), empty(), NO_AUTHORITIES);
     }
-}
+}*/

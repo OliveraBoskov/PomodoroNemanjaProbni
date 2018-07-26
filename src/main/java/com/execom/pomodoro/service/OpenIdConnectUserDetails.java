@@ -1,4 +1,4 @@
-package com.execom.pomodoro.service;
+/*package com.execom.pomodoro.service;
 
 import java.util.Collection;
 import java.util.Map;
@@ -62,3 +62,4 @@ public class OpenIdConnectUserDetails implements UserDetails {
     }
     
 }
+*/
